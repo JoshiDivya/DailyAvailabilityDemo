@@ -1,0 +1,18 @@
+.App {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
+  width: 80%;
+}
+
+.box {
+  width: 80%;
+  height: auto;
+  margin-top: 40px;
+  align-items: center;
+  justify-items: center;
+  background-color: #fff;
+  padding: 20px;
+}
+
