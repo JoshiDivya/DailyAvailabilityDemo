@@ -3,6 +3,7 @@ import "./App.css";
 import SliderComponent from "./components/SliderComponent";
 import {styled} from '@emotion/styled'
 
+
 function App() {
 
   const currentDate = new Date();
@@ -21,8 +22,8 @@ console.log(next7Days);
     {
       day: next7Days[0],
       timeSlots: [
-        { from: 7, to: 9, task: '' },
-        { from: 3, to: 6, task: '' }
+        { from: 10, to: 13, task: '' },
+        { from: 17, to: 20, task: '' }
       ]
     },
     {
@@ -42,8 +43,8 @@ console.log(next7Days);
     {
       day: next7Days[3],
       timeSlots: [
-        { from: 7, to: 12, task: '' }
-       
+        { from: 7, to: 12, task: '' },
+        { from: 14, to: 21, task: '' }
       ]
     },
     {

@@ -10,8 +10,9 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 export default function FormDialog({dataArr,handleSave}) {
   const [open, setOpen] = React.useState(false);
+  // const {slot1,slot2} = dataArr;
+console.log(dataArr);
   const count = dataArr.length;
-
   const [task1,setTask1] = React.useState(count>0 ? dataArr[0].task :"");
   const [task2,setTask2] = React.useState(count>1 ? dataArr[1].task : '');
 

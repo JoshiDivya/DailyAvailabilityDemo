@@ -65,40 +65,20 @@ const SliderComponent = (props) => {
   const [isTwo, setIsTwo] = useState(noOfSlots > 1 ? true : false);
   const classes = useStyles();
 
+  const handleSlot1Change=(e,newV)=>{
+setSlot1(newV);
+timeSlots[0].from = newV[0];
+timeSlots[0].to= newV[1]; 
+  }
+  const handleSlot2Change=(e,newV)=>{
+setSlot2(newV);
+timeSlots[1].from = newV[0];
+timeSlots[1].to= newV[1]; 
+  }
 
   const handleSaveTask = (task) => {
     console.log(`successfully saved ${task}`);
   };
-
-  // const TwoSliders = () => {
-  //   return (
-  //     <div className={classes.flex}>
-  //       <div className={classes.singleSlider}>
-  //         <Slider
-  //           max={24}
-  //           step={1}
-  //           value={slot1}
-  //           onChange={handleSlot1}
-  //           marks={mark}
-  //           valueLabelDisplay="on"
-  //           getAriaValueText={valuetext}
-  //         ></Slider>
-  //       </div>
-  //       <div className={classes.twoSlider}>
-  //         <Slider
-  //           max={24}
-  //           step={1}
-  //           value={slot2}
-  //           onChange={handleSlot2}
-  //           marks={mark}
-  //           valueLabelDisplay="on"
-  //         ></Slider>
-  //       </div>
-  //     </div>
-  //   );
-  //};
-
-
   return (
     <div
       style={{
@@ -119,7 +99,7 @@ const SliderComponent = (props) => {
           max={24}
             step={1}
             value={slot1}
-            onChange={(e,v)=>setSlot1(v)}
+            onChange={handleSlot1Change}
             marks={mark}
             valueLabelDisplay="on"
           ></Slider>
@@ -130,7 +110,7 @@ const SliderComponent = (props) => {
             max={24}
               step={1}
               value={slot2}
-              onChange={(e,v)=>setSlot2(v)}
+              onChange={handleSlot2Change}
               marks={mark}
               valueLabelDisplay="on"
             ></Slider>
@@ -139,10 +119,10 @@ const SliderComponent = (props) => {
       </div>
 
       {!isTwo ? (
-        <AddIcon onClick={() => setIsTwo(true)} style={{ cursor: "pointer" }} />
+        <AddIcon onClick={() => {setIsTwo(true); setSlot2([timeSlots[1].from, timeSlots[1].to])}} style={{ cursor: "pointer" }} />
       ) : (
         <RemoveIcon
-          onClick={() => setIsTwo(false)}
+          onClick={() => {setIsTwo(false); setSlot2([]);}}
           style={{ cursor: "pointer" }}
         ></RemoveIcon>
       )}
