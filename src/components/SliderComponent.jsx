@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FormDialog from "./Dialog";
-
 import { makeStyles } from "@mui/styles";
 
 const mark = [
@@ -26,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   singleSlider: {
     width: "100%",
-    zIndex:1,
-    position:'absolute',
+    zIndex: 1,
+    position: "absolute",
     color: "yellow",
   },
   twoSlider: {
@@ -48,33 +47,41 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
 }));
-function valuetext(value) {
-  return `${value}`;
-}
 
 const SliderComponent = (props) => {
-  const { day, timeSlots } = props.dailydata;
-  const noOfSlots = timeSlots.length;
-  const { task1, setTask1 } = useState(timeSlots[0].task);
-  const { task2, setTask2 } = useState(noOfSlots > 1 ? timeSlots[1].task : "");
-  const [slot2, setSlot2] = useState(
-    noOfSlots > 1 ? [timeSlots[1].from, timeSlots[1].to] : [21, 23]
-  );
-  const [slot1, setSlot1] = useState([timeSlots[0].from, timeSlots[0].to]);
+  const [timeSlots, setTimeSlots] = useState(props.slot.timeSlots);
+  const  day = props.dayValue;
+  console.log("Day",day);
 
-  const [isTwo, setIsTwo] = useState(noOfSlots > 1 ? true : false);
+  const noOfSlots = timeSlots?.length || 0;
+
+  const [slot1, setSlot1] = useState([timeSlots[0].from, timeSlots[0].to]);
+  const [slot2, setSlot2] = useState(
+    timeSlots[1] ? [timeSlots[1].from, timeSlots[1].to] : [21, 23]
+  );
+  const [isTwo, setIsTwo] = useState(timeSlots[1] ? true : false);
   const classes = useStyles();
 
-  const handleSlot1Change=(e,newV)=>{
-setSlot1(newV);
-timeSlots[0].from = newV[0];
-timeSlots[0].to= newV[1]; 
-  }
-  const handleSlot2Change=(e,newV)=>{
-setSlot2(newV);
-timeSlots[1].from = newV[0];
-timeSlots[1].to= newV[1]; 
-  }
+  const handleSlot1Change = (e, newV) => {
+    setSlot1(newV);
+   setTimeSlots((prevTimeSlot)=>{
+    const newSlot = [...prevTimeSlot];
+    if(newSlot.length>0){
+          newSlot[0]={...newSlot[0],from :newV[0],to:newV[1]}                            
+    }
+    return newSlot;
+   })
+  };
+  const handleSlot2Change = (e, newV) => {
+    setSlot2(newV);
+    setTimeSlots(prevTimeSlots => {
+      const updatedTimeSlots = [...prevTimeSlots];
+      if (updatedTimeSlots.length > 1) {
+        updatedTimeSlots[1] = { ...updatedTimeSlots[1], from: newV[0], to: newV[1] };
+      }
+      return updatedTimeSlots;
+    });
+  };
 
   const handleSaveTask = (task) => {
     console.log(`successfully saved ${task}`);
@@ -96,7 +103,7 @@ timeSlots[1].to= newV[1];
       <div className={classes.grid2}>
         <div className={classes.singleSlider}>
           <Slider
-          max={24}
+            max={24}
             step={1}
             value={slot1}
             onChange={handleSlot1Change}
@@ -107,7 +114,7 @@ timeSlots[1].to= newV[1];
         {isTwo && (
           <div className={classes.twoSlider}>
             <Slider
-            max={24}
+              max={24}
               step={1}
               value={slot2}
               onChange={handleSlot2Change}
@@ -119,10 +126,19 @@ timeSlots[1].to= newV[1];
       </div>
 
       {!isTwo ? (
-        <AddIcon onClick={() => {setIsTwo(true); setSlot2([timeSlots[1].from, timeSlots[1].to])}} style={{ cursor: "pointer" }} />
+        <AddIcon
+          onClick={() => {
+            setIsTwo(true);
+            setSlot2([21,23]);
+          }}
+          style={{ cursor: "pointer" }}
+        />
       ) : (
         <RemoveIcon
-          onClick={() => {setIsTwo(false); setSlot2([]);}}
+          onClick={() => {
+            setIsTwo(false);
+            setSlot2([]);
+          }}
           style={{ cursor: "pointer" }}
         ></RemoveIcon>
       )}
@@ -131,5 +147,3 @@ timeSlots[1].to= newV[1];
 };
 
 export default SliderComponent;
-
-
